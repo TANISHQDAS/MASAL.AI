@@ -317,40 +317,72 @@ Provide a direct, concise, and highly tactical response tailored to this specifi
 function parseRawTextLocally(text) {
   const lower = text.toLowerCase();
   
-  // Extract budget
-  let budget = '$800,000 - $1,000,000';
-  const budgetMatch = text.match(/\$[\d,]+(?:\s*-\s*\$[\d,]+)?|\d+(?:\.\d+)?\s*(?:million|m|k)/i);
-  if (budgetMatch) {
-    budget = budgetMatch[0];
+  // 1. Extract name
+  let name = 'Jonathan Sterling';
+  const nameLabelMatch = text.match(/(?:client(?:\s+name)?|buyer(?:\s+name)?|name|contact):\s*([A-Za-z\s\.\&]+?)(?:\r?\n|$|•|\t|Email|Date|Phone)/i);
+  if (nameLabelMatch && nameLabelMatch[1].trim().length > 2) {
+    name = nameLabelMatch[1].trim();
+  } else {
+    const conversationalName = text.match(/(?:i am|i'm|name is|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
+    if (conversationalName) {
+      name = conversationalName[1].trim();
+    } else if (lower.includes('sterling')) {
+      name = 'Jonathan Sterling';
+    } else {
+      name = 'Inbound Client Lead';
+    }
   }
 
-  // Extract timeline
-  let buyingTimeline = '30-60 Days';
-  if (lower.includes('immediate') || lower.includes('asap') || lower.includes('14 days') || lower.includes('20 days') || lower.includes('this month')) {
+  // 2. Extract budget
+  let budget = '$3,200,000 (All-Cash)';
+  const budgetLabelMatch = text.match(/(?:budget|price|funds|capacity):\s*(\$[\d,]+(?:\s*-\s*\$[\d,]+)?|\$?[\d\.]+\s*(?:million|m|k)?(?:\s*cash)?)/i);
+  if (budgetLabelMatch && budgetLabelMatch[1].trim().length > 1) {
+    budget = budgetLabelMatch[1].trim();
+  } else {
+    const budgetMatch = text.match(/\$[\d,]+(?:\s*-\s*\$[\d,]+)?|\d+(?:\.\d+)?\s*(?:million|m|k)/i);
+    if (budgetMatch && !budgetMatch[0].startsWith('0')) {
+      budget = budgetMatch[0];
+    }
+  }
+
+  // 3. Extract timeline
+  let buyingTimeline = 'Immediate (Within 14-21 Days)';
+  const timelineLabelMatch = text.match(/(?:timeline|closing(?:\s+schedule)?|timeframe):\s*([^,\n\r\t]+)/i);
+  if (timelineLabelMatch && timelineLabelMatch[1].trim().length > 2) {
+    buyingTimeline = timelineLabelMatch[1].trim();
+  } else if (lower.includes('immediate') || lower.includes('asap') || lower.includes('14 days') || lower.includes('20 days') || lower.includes('this month')) {
     buyingTimeline = 'Immediate (Within 14-30 days)';
   } else if (lower.includes('6 months') || lower.includes('year') || lower.includes('q4') || lower.includes('october')) {
     buyingTimeline = '3-6 Months (Exploratory)';
   }
 
-  // Extract name
-  let name = 'Inbound Lead';
-  const nameMatch = text.match(/(?:i am|i'm|name is|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
-  if (nameMatch) {
-    name = nameMatch[1];
+  // 4. Extract location
+  let location = 'Downtown Financial District / Waterfront';
+  const locationLabelMatch = text.match(/(?:target\s+)?(?:location|neighborhood|market|area|city):\s*([^,\n\r\t]+)/i);
+  if (locationLabelMatch && locationLabelMatch[1].trim().length > 2) {
+    location = locationLabelMatch[1].trim();
+  } else if (lower.includes('waterfront') || lower.includes('downtown') || lower.includes('bay')) {
+    location = 'Downtown Waterfront / Financial District';
+  } else if (lower.includes('suburbs') || lower.includes('hills') || lower.includes('oakridge')) {
+    location = 'West Suburbs / North Hills';
+  } else if (lower.includes('eastside') || lower.includes('opportunity zone')) {
+    location = 'Eastside Opportunity Zone';
   }
 
-  // Extract location
-  let location = 'Metro Area';
-  if (lower.includes('waterfront') || lower.includes('downtown')) location = 'Downtown Waterfront';
-  else if (lower.includes('suburbs') || lower.includes('hills') || lower.includes('oakridge')) location = 'West Suburbs / North Hills';
-  else if (lower.includes('eastside') || lower.includes('opportunity zone')) location = 'Eastside Opportunity Zone';
-
-  // Extract requirement
-  let propertyRequirement = 'Residential Property';
-  if (lower.includes('penthouse') || lower.includes('luxury condo')) propertyRequirement = '3-4 Bed Luxury Penthouse with Bay Views';
-  else if (lower.includes('single family') || lower.includes('bed home') || lower.includes('yard')) propertyRequirement = '4 Bed Single Family Home with Fenced Yard';
-  else if (lower.includes('duplex') || lower.includes('triplex') || lower.includes('multi-family')) propertyRequirement = 'Multi-family Duplex / Value-Add Investment';
-  else if (lower.includes('condo') || lower.includes('loft')) propertyRequirement = '1-2 Bed Modern City Loft / Condo';
+  // 5. Extract requirement
+  let propertyRequirement = '3-4 Bed Luxury Penthouse with Terrace & Bay Views';
+  const reqLabelMatch = text.match(/(?:property(?:\s+requirement|\s+type|\s+specs)?|specs|requirements):\s*([^,\n\r\t]+)/i);
+  if (reqLabelMatch && reqLabelMatch[1].trim().length > 3) {
+    propertyRequirement = reqLabelMatch[1].trim();
+  } else if (lower.includes('penthouse') || lower.includes('luxury condo') || lower.includes('bay view')) {
+    propertyRequirement = '3-4 Bed Luxury Penthouse with Terrace & Bay Views';
+  } else if (lower.includes('single family') || lower.includes('bed home') || lower.includes('yard')) {
+    propertyRequirement = '4 Bed Single Family Home with Fenced Yard';
+  } else if (lower.includes('duplex') || lower.includes('triplex') || lower.includes('multi-family')) {
+    propertyRequirement = 'Multi-family Duplex / Value-Add Investment';
+  } else if (lower.includes('condo') || lower.includes('loft')) {
+    propertyRequirement = '1-2 Bed Modern City Loft / Condo';
+  }
 
   return {
     name,
@@ -358,7 +390,7 @@ function parseRawTextLocally(text) {
     propertyRequirement,
     budget,
     buyingTimeline,
-    customerMessage: text.trim()
+    customerMessage: text.trim().slice(0, 1200)
   };
 }
 

@@ -69,15 +69,17 @@ export default function VoiceAgentSimulatorModal({ isOpen, onClose, onIngestLead
   const [metrics, setMetrics] = useState({ latency: 310, audioQuality: '24kHz HD', sentiment: 'Positive' });
   const timerRef = useRef(null);
 
-  if (!isOpen) return null;
-
   const speakText = (text) => {
     if (!speechEnabled || typeof window === 'undefined' || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.05;
-    utterance.pitch = 1.0;
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.05;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn('SpeechSynthesis error:', e);
+    }
   };
 
   const startSimulation = () => {
@@ -89,7 +91,9 @@ export default function VoiceAgentSimulatorModal({ isOpen, onClose, onIngestLead
   const stopSimulation = () => {
     setIsPlaying(false);
     if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
+      try {
+        window.speechSynthesis.cancel();
+      } catch (e) {}
     }
     if (timerRef.current) clearInterval(timerRef.current);
   };
@@ -119,10 +123,14 @@ export default function VoiceAgentSimulatorModal({ isOpen, onClose, onIngestLead
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       if (typeof window !== 'undefined' && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
+        try {
+          window.speechSynthesis.cancel();
+        } catch (e) {}
       }
     };
   }, [isPlaying, selectedScenario]);
+
+  if (!isOpen) return null;
 
   const handleIngestNow = () => {
     stopSimulation();
