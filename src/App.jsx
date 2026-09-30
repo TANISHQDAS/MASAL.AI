@@ -9,6 +9,7 @@ import VoiceAgentConfigDrawer from './components/VoiceAgentConfigDrawer';
 import { INITIAL_LEADS } from './data/mockLeads';
 import { analyzeLead, getApiConfig } from './services/aiService';
 
+// Production Build v1.0.4 - Clean Verification
 export default function App() {
   const [leads, setLeads] = useState(() => {
     try {
