@@ -17,9 +17,10 @@ export default class ErrorBoundary extends React.Component {
 
   handleReset = () => {
     try {
-      localStorage.removeItem('leadpulse_leads');
+      localStorage.clear();
+      sessionStorage.clear();
     } catch (e) {}
-    window.location.reload();
+    window.location.href = window.location.origin + '?v=' + Date.now();
   };
 
   render() {
