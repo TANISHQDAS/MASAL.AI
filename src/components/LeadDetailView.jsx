@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import LeadCopilotChat from './LeadCopilotChat';
 import DealAcceleratorTab from './DealAcceleratorTab';
+import BuyerTrustAuditModal from './BuyerTrustAuditModal';
 
 export default function LeadDetailView({ 
   lead, 
@@ -42,6 +43,7 @@ export default function LeadDetailView({
   const [leadStatus, setLeadStatus] = useState(lead?.status || 'New');
   const [salespersonNote, setSalespersonNote] = useState(lead?.notes || '');
   const [isSavingNote, setIsSavingNote] = useState(false);
+  const [isAuditOpen, setIsAuditOpen] = useState(false);
 
   if (!lead) {
     return (
@@ -148,6 +150,14 @@ export default function LeadDetailView({
 
           {/* Quick Action CTAs */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsAuditOpen(true)}
+              className="btn-secondary text-xs flex items-center gap-1.5 border-emerald-600 text-emerald-800 hover:bg-emerald-50"
+              title="View non-technical scoring audit breakdown for client calls"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Explain Score (Audit)</span>
+            </button>
             <button
               onClick={() => onReanalyzeLead(lead)}
               disabled={isReanalyzing}
@@ -428,6 +438,13 @@ export default function LeadDetailView({
         )}
 
       </div>
+
+      {/* Buyer Trust & AI Explainability Audit Modal */}
+      <BuyerTrustAuditModal
+        isOpen={isAuditOpen}
+        onClose={() => setIsAuditOpen(false)}
+        lead={lead}
+      />
 
     </div>
   );

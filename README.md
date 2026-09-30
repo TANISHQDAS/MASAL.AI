@@ -1,129 +1,110 @@
-# 🏢 LeadPulse AI — Real Estate Lead Intelligence & Conversational Copilot
+# 🏢 LeadPulse AI — Real Estate Voice & Lead Intelligence Copilot
 
-> **Masal AI FDE Assignment (Round 2)**  
-> An AI-powered web application that helps real estate sales teams instantly prioritize inbound leads, extract customer intent, and execute high-converting sales actions in seconds. Designed with a clean AWS Console enterprise UI theme.
-
----
-
-## ⚡ Live Highlights & Core Features
-
-### 1. 📋 Inbound Lead Intake & Parsing
-- Multi-field intake capture: **Name, Target Location, Property Specs, Budget/Financing, Buying Timeline, and Free-text Customer Message / Call Transcript**.
-- **Quick Demo Persona Ingestion**: 1-click presets for rapid live evaluation (High-Net-Worth Cash Buyer, Suburban Family, First-Time Buyer, 1031 Exchange Investor).
-
-### 2. 🧠 AI Lead Qualification & 5-Second Scan
-- **AI Lead Score (0–100)**: Quantitative scoring based on liquidity, timeline urgency, and intent clarity.
-- **Priority Tiering**: `🔥 HOT` (80–100), `⚡ WARM` (50–79), `❄️ COLD` (<50).
-- **Executive Summary & Customer Intent**: Identifies the buyer's true underlying motivation (e.g., *Executive Relocation*, *Rent vs Own Exploration*, *1031 Tax-Deferred Exchange*).
-- **Key Requirements**: Extracted constraints and physical property specs.
-- **Objections & Risk Factors**: Anticipates hidden hesitation points before the salesperson picks up the phone.
-- **Recommended Next Action**: High-priority immediate tactical step for the sales rep.
-- **Suggested Customer Response**: Pre-drafted, personalized message with 1-click Copy, WhatsApp, and Email dispatch.
-
-### 3. 💬 Grounded Conversational Copilot
-- An interactive chat interface attached to the active lead.
-- Grounded strictly in the selected lead's profile, financial constraints, and psychology (not a generic chatbot).
-- Supports 1-click strategic prompt chips:
-  - *"What should I emphasize on the call?"*
-  - *"Make my reply more assertive"*
-  - *"How to handle their budget/rate concern?"*
-  - *"Draft a concise WhatsApp follow-up"*
-  - *"Roleplay as this buyer"*
-
-### 4. 📊 Multi-Lead Pipeline Prioritization
-- Comprehensive pipeline view with instant filtering by **Hot / Warm / Cold** priority tiers.
-- Multi-parameter sorting: **AI Score**, **Recency**, **Budget**.
-- Full text search across buyer names, locations, and extracted customer intents.
-- Persistent state management backed by `localStorage`.
-
-### 5. 🚀 Our Invented Feature: **Deal Accelerator Suite™**
-A dedicated workflow suite built for what happens *before, during, and after* the phone call:
-1. **Live Call Battlecard & Psychological Profile**:
-   - Identifies the buyer's psychological archetype.
-   - Generates an exact **7-Second Call Opener** script.
-   - Provides **Live Objection Rebuttals** (e.g., interest rate pushback, HOA concerns) with verbatim "Say this" scripts.
-2. **Smart Inventory Matcher & Auto-Pitch**:
-   - Matches the lead's criteria against active inventory listings.
-   - Formulates tailored value hooks explaining why that property solves their specific unspoken need.
-3. **1-Click Multi-Channel Dispatcher**:
-   - Direct formatted launch for **WhatsApp** (`wa.me`) and **Email** (`mailto:`).
+> **Masal AI Forward Deployed Engineer (FDE) Assignment — Round 2**  
+> An AI-powered web application and voice intelligence copilot built for forward deployed engineers sitting between product and real estate customers: configuring, demoing, troubleshooting, and qualifying inbound leads live on client calls.
 
 ---
 
-## 🏗️ Architecture & Technical Stack
+## 🎯 Role Context: Forward Deployed Engineer (FDE) Focus
+
+In real-world deployment calls with non-technical real estate agency owners, brokers, and sales directors, an FDE must do two things simultaneously:
+1. **Build and demonstrate working software live** that solves inbound lead prioritization in seconds.
+2. **Explain complex AI behavior clearly enough that non-technical buyers trust it.**
+
+LeadPulse AI is built from the ground up for this workflow.
+
+---
+
+## ⚡ Core Features & FDE Capabilities
+
+### 1. 🎙️ Live Voice Agent Call Simulator (Interactive Audio Demo)
+- **Real-Time Speech Synthesis**: The browser literally speaks the AI voice concierge's dialogue aloud in real time using native speech synthesis.
+- **Visual Waveform & Turn-Taking**: Displays active audio waveforms, speaker badges, and live call transcripts.
+- **FDE Telemetry Bar**: Shows live diagnostic metrics: latency (`280ms`), audio codec (`24kHz HD`), and telephony connection state.
+- **1-Click Call Ingestion**: Automatically ingests the completed voice call into the CRM pipeline with structured AI extraction.
+
+### 2. ⚙️ Voice System Live Configurator & Diagnostics
+- **Live Client Tuning on Calls**: The FDE can adjust the voice agent's tone (*Warm Consultative*, *Concise & Fast*, *Luxury Advisory*), speech cadence, and prompt instructions directly on a screen-share call.
+- **Automated Escalation Thresholds**: Set minimum budget triggers (e.g., `$1,500,000`) for immediate human broker transfer.
+- **Anti-Hallucination Guardrails**: Visual badge and telemetry verifying verified MLS listing enforcement.
+
+### 3. 🛡️ Buyer Trust & AI Explainability Audit
+- Non-technical buyers often distrust AI as an arbitrary "black box."
+- Clicking **"Explain Score (Audit)"** breaks down any lead's score (e.g., 96/100) into plain-English attribution drivers:
+  - `+25 pts`: Verified all-cash capability (eliminates mortgage contingency).
+  - `+20 pts`: Immediate 14–20 day closing window.
+  - `+15 pts`: High commission pool.
+  - `+10 pts`: Precise physical property requirements.
+- **Grounded Transcript Citations**: Directly highlights the exact sentences from the customer inquiry that triggered the score.
+
+### 4. 📋 Inbound Lead Intake & AI Fast-Ingest
+- Multi-field structured capture (Name, Location, Specs, Budget, Timeline, Message).
+- **AI Auto-Extract**: Paste any messy, unformatted email inquiry, WhatsApp chat log, or call transcript, and the AI parses all fields in 1 click.
+- **Realistic Scenario Presets**: High-Net-Worth Cash Buyer, Suburban Family Relocation, First-Time Condo Buyer, 1031 Exchange Investor.
+
+### 5. 🧠 5-Second Scan Lead Intelligence
+- **AI Lead Score (0–100)**: Quantitative ranking.
+- **Priority Tiering**: `🔥 HOT` (80–100), `⚡ WARM` (50–79), `❄️ NURTURE` (<50).
+- **Customer Intent**: Pinpoints unspoken motivation (e.g. *Liquidity Event Relocation*, *School District Catchment*).
+- **Key Requirements vs Objections**: Side-by-side risk and constraint analysis.
+- **Recommended Next Action**: Tactical high-priority directive.
+- **Suggested Response**: Pre-drafted customer message ready for 1-click copy or dispatch.
+
+### 6. 💬 Grounded Conversational Copilot
+- Interactive chat attached to the active lead, grounded strictly in their constraints and psychology.
+- Quick prompts: *"What to emphasize on the call?"*, *"Make my reply more assertive"*, *"Handle rate anxiety"*, *"Roleplay as the buyer"*.
+
+### 7. 🚀 Deal Accelerator Suite™ (Invented Feature)
+- **Live Phone Battlecard**: Psychological archetype and verbatim **7-Second Call Opener**.
+- **Live Objection Rebuttals**: Exact "Say this" scripts for common pushbacks.
+- **Smart Inventory Matcher**: Matches lead specs against active listings with tailored value hooks.
+- **1-Click Multi-Channel Dispatch**: Pre-filled WhatsApp (`wa.me`) and Email (`mailto:`) links.
+
+---
+
+## 🏗️ Architecture Overview
 
 ```mermaid
 flowchart TD
-    A[Inbound Form / Transcript] --> B[Lead Intake Module]
-    B --> C[AI Intelligence Engine]
-    C --> D{API Key Configured?}
-    D -- Yes --> E[Google Gemini 1.5/2.0 API / Groq LLM]
-    D -- Zero-Setup / Offline --> F[Adaptive Local Inference Engine]
-    E --> G[Structured JSON Response]
-    F --> G[Structured JSON Response]
-    G --> H[Priority Queue & Score Engine]
-    H --> I[5-Second Scan Dashboard]
-    H --> J[Grounded Copilot Chat]
-    H --> K[Deal Accelerator Suite]
+    A[Inbound Call / Voice Stream] --> B[Voice Agent Simulator]
+    C[Unstructured Text / Email] --> D[AI Fast-Ingest Parser]
+    B --> E[Structured Lead Data]
+    D --> E
+    E --> F[AI Qualification Engine]
+    F --> G[Priority Queue & Score Engine]
+    G --> H[5-Second Scan Dashboard]
+    G --> I[Conversational Copilot]
+    G --> J[Deal Accelerator Suite]
+    G --> K[Buyer Trust Audit Trail]
 ```
 
-### Technology Stack
-- **Frontend Framework**: React 18 + Vite
-- **Styling & Design System**: Tailwind CSS (Styled with AWS Cloud Console Dark `#131a22` / `#232f3e` and AWS Accent Orange `#ec7211` tokens)
+### Tech Stack
+- **Frontend**: React 18, Vite, Tailwind CSS
 - **Icons**: Lucide React
-- **AI Integrations**:
-  - Google Gemini API (`gemini-1.5-flash` / `gemini-2.0-flash`)
-  - Groq Cloud API (`llama-3.3-70b-versatile`)
-  - Built-in High-Fidelity Zero-Setup Engine (Ensures 100% out-of-the-box reliability without mandatory credentials)
+- **Audio & Speech**: Browser Web Speech API (`SpeechSynthesis`)
+- **AI Models**: Google Gemini 1.5 Flash (`gemini-1.5-flash`), Groq Cloud (`llama-3.3-70b-versatile`), and High-Fidelity Zero-Setup Heuristic Engine.
+- **Deployment**: Vercel ready with [`vercel.json`](./vercel.json).
 
 ---
 
-## 🚀 How to Run Locally
+## 🚀 Running Locally
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or pnpm or yarn
-
-### Installation Steps
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-username/real-estate-lead-ai.git
-cd real-estate-lead-ai
+git clone https://github.com/TANISHQDAS/MASAL.AI.git
+cd MASAL.AI
 
 # 2. Install dependencies
 npm install
 
-# 3. Start development server
+# 3. Start dev server
 npm run dev
 ```
-Open your browser at `http://localhost:3000`.
+Open **`http://localhost:3000`** in your browser.
 
 ---
 
-## 🔑 AI API Configuration
+## 🤖 AI Usage Disclosure (Submission Requirement #4)
 
-1. **Zero Setup (Default)**: The application is pre-configured to run out of the box with zero setup for reviewers and evaluators.
-2. **Custom API Key (Optional)**: Click the **AI Engine** button in the top navigation bar to enter your free Google Gemini API Key or Groq API Key.
-
----
-
-## 💡 Key Technical & Product Decisions
-
-1. **Deterministic JSON Schema Prompting**: The AI prompt is strictly constrained to return structured JSON without extraneous markdown, ensuring zero runtime parsing exceptions on live model calls.
-2. **Context-Grounded Conversational Memory**: Rather than a stateless chat, every prompt injects the lead's complete budget, timeline, customer message, and identified objections into the system prompt to avoid generic LLM hallucinations.
-3. **Zero-Setup Fallback Engine**: Recognizing that evaluators often test live deployment links without immediately pasting API keys, we built an adaptive heuristic parsing fallback so the entire product flow works seamlessly 100% of the time.
-4. **AWS Enterprise Design Language**: High-contrast card layouts, status badges, and rapid scannability tailored for high-volume sales reps who need to qualify leads in under 5 seconds.
-
----
-
-## ⚠️ Known Limitations & Future Roadmap
-
-- **Voice Inbound Audio**: Currently accepts raw voice call transcripts; future versions can integrate direct Whisper / Gemini Audio streaming for live phone call transcription.
-- **CRM Bi-Directional Sync**: Ready for webhook integrations with HubSpot, Salesforce, and Follow Up Boss.
-
----
-
-## 🤖 AI Usage Disclosure
-
-- **Claude 3.7 & Gemini**: Used for prompt engineering, schema formulation, and architectural component breakdown.
-- **Copilot**: Used for repetitive JSX boilerplate and Tailwind class utilities.
+- **Gemini 1.5 / 2.0 API**: Used for production real-time structured lead scoring, unstructured transcript parsing, grounded conversational sales copilot replies, and objection battlecards.
+- **Claude & Gemini Coding Assistants**: Used for system prompt engineering, JSON schema formatting, architectural modularization, and initial React component scaffolding.

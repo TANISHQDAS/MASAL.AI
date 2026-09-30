@@ -4,6 +4,8 @@ import LeadListView from './components/LeadListView';
 import LeadDetailView from './components/LeadDetailView';
 import LeadIntakeModal from './components/LeadIntakeModal';
 import ApiSettingsModal from './components/ApiSettingsModal';
+import VoiceAgentSimulatorModal from './components/VoiceAgentSimulatorModal';
+import VoiceAgentConfigDrawer from './components/VoiceAgentConfigDrawer';
 import { INITIAL_LEADS } from './data/mockLeads';
 import { analyzeLead, getApiConfig } from './services/aiService';
 
@@ -27,6 +29,8 @@ export default function App() {
   const [currentFilter, setCurrentFilter] = useState('ALL');
   const [isIntakeOpen, setIsIntakeOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isVoiceSimOpen, setIsVoiceSimOpen] = useState(false);
+  const [isVoiceConfigOpen, setIsVoiceConfigOpen] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isReanalyzing, setIsReanalyzing] = useState(false);
   const [apiConfig, setApiConfig] = useState(getApiConfig());
@@ -119,6 +123,8 @@ export default function App() {
       <Navbar
         onNewLead={() => setIsIntakeOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenVoiceSimulator={() => setIsVoiceSimOpen(true)}
+        onOpenVoiceConfig={() => setIsVoiceConfigOpen(true)}
         leads={leads}
         currentFilter={currentFilter}
         setCurrentFilter={setCurrentFilter}
@@ -165,6 +171,18 @@ export default function App() {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         onConfigSaved={handleConfigSaved}
+      />
+
+      <VoiceAgentSimulatorModal
+        isOpen={isVoiceSimOpen}
+        onClose={() => setIsVoiceSimOpen(false)}
+        onIngestLead={handleCreateLead}
+      />
+
+      <VoiceAgentConfigDrawer
+        isOpen={isVoiceConfigOpen}
+        onClose={() => setIsVoiceConfigOpen(false)}
+        onSaveConfig={(cfg) => console.log('Updated Voice Agent Config:', cfg)}
       />
 
     </div>
