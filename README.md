@@ -1,6 +1,6 @@
 # 🏢 LeadPulse AI — Real Estate Voice & Lead Intelligence Copilot
 
-> **Masal AI Forward Deployed Engineer (FDE) Assignment — Round 2**  
+> **Masal AI Forward Deployed Engineer (FDE) Assignment **  
 > An AI-powered web application and voice intelligence copilot built for forward deployed engineers sitting between product and real estate customers: configuring, demoing, troubleshooting, and qualifying inbound leads live on client calls.
 
 ---
