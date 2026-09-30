@@ -3,6 +3,9 @@
 > **Masal AI Forward Deployed Engineer (FDE) Assignment **  
 > An AI-powered web application and voice intelligence copilot built for forward deployed engineers sitting between product and real estate customers: configuring, demoing, troubleshooting, and qualifying inbound leads live on client calls.
 
+🌐 **Live URL (Ready to test without setup):** [https://masal-ai-delta.vercel.app](https://masal-ai-delta.vercel.app)  
+📦 **Public GitHub Repository:** [https://github.com/TANISHQDAS/MASAL.AI](https://github.com/TANISHQDAS/MASAL.AI)
+
 ---
 
 ## 🎯 Role Context: Forward Deployed Engineer (FDE) Focus
