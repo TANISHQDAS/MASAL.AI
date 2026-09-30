@@ -20,12 +20,13 @@ import {
 import { MOCK_INVENTORY } from '../data/inventoryListings';
 
 export default function DealAcceleratorTab({ lead }) {
+  if (!lead) return null;
   const [copiedKey, setCopiedKey] = useState(null);
 
   // Compute matched properties
   const matchedListings = MOCK_INVENTORY.map(prop => {
     let matchScore = 70;
-    const reqText = `${lead.propertyRequirement} ${lead.location} ${lead.customerMessage}`.toLowerCase();
+    const reqText = `${lead?.propertyRequirement || ''} ${lead?.location || ''} ${lead?.customerMessage || ''}`.toLowerCase();
     
     if (reqText.includes('penthouse') && prop.type.includes('Penthouse')) matchScore += 25;
     if (reqText.includes('family') && prop.type.includes('Single Family')) matchScore += 25;
@@ -43,9 +44,11 @@ export default function DealAcceleratorTab({ lead }) {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const battlecard = lead.aiAnalysis?.battlecard || {
+  const leadFirstName = (lead?.name || 'Lead').split(' ')[0] || 'Client';
+
+  const battlecard = lead?.aiAnalysis?.battlecard || {
     buyerPersona: 'Active Buyer evaluating options in the current market.',
-    openingHook: `Hi ${lead.name.split(' ')[0]}, I have 2 listings ready that fit your exact ${lead.propertyRequirement} criteria.`,
+    openingHook: `Hi ${leadFirstName}, I have 2 listings ready that fit your exact ${lead?.propertyRequirement || 'property specs'} criteria.`,
     commonObjections: [
       {
         objection: 'Need to think about current market conditions.',
@@ -57,9 +60,9 @@ export default function DealAcceleratorTab({ lead }) {
   const currentProperty = selectedProperty || matchedListings[0];
 
   // Dispatch message templates
-  const whatsappText = `Hi ${lead.name.split(' ')[0]}! 🏡 Found a premier match for your ${lead.propertyRequirement} search:\n\n*${currentProperty.title}* (${currentProperty.price})\n✨ ${currentProperty.highlights.slice(0, 2).join(' • ')}\n\nWould you like me to send over the private walkthrough?`;
-  const emailSubject = `Exclusive Match for your ${lead.propertyRequirement} search — ${currentProperty.title}`;
-  const emailBody = `Hi ${lead.name.split(' ')[0]},\n\nThank you for reaching out regarding your property search in ${lead.location}.\n\nBased on your criteria and timeline of ${lead.buyingTimeline}, I wanted to give you first priority access to:\n\nProperty: ${currentProperty.title}\nPrice: ${currentProperty.price}\nKey Specs: ${currentProperty.bedrooms} Beds, ${currentProperty.bathrooms} Baths, ${currentProperty.areaSqFt} sq ft\n\nWhy this fits your search:\n- ${currentProperty.highlights[0]}\n- ${currentProperty.highlights[1]}\n- ${currentProperty.dealHook}\n\nWould you be open for a private 15-minute tour this week?\n\nBest regards,\nYour Real Estate Advisory Team`;
+  const whatsappText = `Hi ${leadFirstName}! 🏡 Found a premier match for your ${lead?.propertyRequirement || 'search'} inquiry:\n\n*${currentProperty.title}* (${currentProperty.price})\n✨ ${currentProperty.highlights.slice(0, 2).join(' • ')}\n\nWould you like me to send over the private walkthrough?`;
+  const emailSubject = `Exclusive Match for your ${lead?.propertyRequirement || 'property'} search — ${currentProperty.title}`;
+  const emailBody = `Hi ${leadFirstName},\n\nThank you for reaching out regarding your property search in ${lead?.location || 'the area'}.\n\nBased on your criteria and timeline of ${lead?.buyingTimeline || 'stated timeframe'}, I wanted to give you first priority access to:\n\nProperty: ${currentProperty.title}\nPrice: ${currentProperty.price}\nKey Specs: ${currentProperty.bedrooms} Beds, ${currentProperty.bathrooms} Baths, ${currentProperty.areaSqFt} sq ft\n\nWhy this fits your search:\n- ${currentProperty.highlights[0]}\n- ${currentProperty.highlights[1]}\n- ${currentProperty.dealHook}\n\nWould you be open for a private 15-minute tour this week?\n\nBest regards,\nYour Real Estate Advisory Team`;
 
   return (
     <div className="space-y-6 animate-fadeIn pb-8">

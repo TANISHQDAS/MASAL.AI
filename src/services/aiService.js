@@ -4,31 +4,52 @@
  * grounded conversational sales assistance, and tactical objection handling.
  */
 
-const ENV_GEMINI_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
+function safeGetItem(key, fallback = '') {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem(key) || fallback;
+    }
+  } catch (e) {
+    console.warn('localStorage access warning:', e);
+  }
+  return fallback;
+}
+
+function safeSetItem(key, val) {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem(key, val);
+    }
+  } catch (e) {
+    console.warn('localStorage write warning:', e);
+  }
+}
+
+const ENV_GEMINI_KEY = (typeof import.meta !== 'undefined' && import.meta.env) ? (import.meta.env.VITE_GEMINI_API_KEY || '') : '';
 
 export const DEFAULT_CONFIG = {
-  provider: 'gemini', // 'gemini' | 'groq'
-  apiKey: localStorage.getItem('leadpulse_api_key') || ENV_GEMINI_KEY,
+  provider: 'gemini',
+  apiKey: safeGetItem('leadpulse_api_key', ENV_GEMINI_KEY),
   modelName: 'gemini-1.5-flash',
 };
 
 export function saveApiConfig(config) {
   if (config.apiKey !== undefined) {
-    localStorage.setItem('leadpulse_api_key', config.apiKey);
+    safeSetItem('leadpulse_api_key', config.apiKey);
   }
   if (config.provider) {
-    localStorage.setItem('leadpulse_provider', config.provider);
+    safeSetItem('leadpulse_provider', config.provider);
   }
   if (config.modelName) {
-    localStorage.setItem('leadpulse_model', config.modelName);
+    safeSetItem('leadpulse_model', config.modelName);
   }
 }
 
 export function getApiConfig() {
   return {
-    provider: localStorage.getItem('leadpulse_provider') || 'gemini',
-    apiKey: localStorage.getItem('leadpulse_api_key') || ENV_GEMINI_KEY,
-    modelName: localStorage.getItem('leadpulse_model') || 'gemini-1.5-flash',
+    provider: safeGetItem('leadpulse_provider', 'gemini'),
+    apiKey: safeGetItem('leadpulse_api_key', ENV_GEMINI_KEY),
+    modelName: safeGetItem('leadpulse_model', 'gemini-1.5-flash'),
   };
 }
 

@@ -11,19 +11,22 @@ import { analyzeLead, getApiConfig } from './services/aiService';
 
 export default function App() {
   const [leads, setLeads] = useState(() => {
-    const saved = localStorage.getItem('leadpulse_leads');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Error parsing saved leads:', e);
+    try {
+      const saved = localStorage.getItem('leadpulse_leads');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
       }
+    } catch (e) {
+      console.warn('Error reading leads from localStorage:', e);
     }
     return INITIAL_LEADS;
   });
 
   const [selectedLeadId, setSelectedLeadId] = useState(() => {
-    return leads[0]?.id || null;
+    return INITIAL_LEADS[0]?.id || 'lead-001';
   });
 
   const [currentFilter, setCurrentFilter] = useState('ALL');
@@ -35,12 +38,16 @@ export default function App() {
   const [isReanalyzing, setIsReanalyzing] = useState(false);
   const [apiConfig, setApiConfig] = useState(getApiConfig());
 
-  // Persist leads to localStorage
+  // Persist leads safely to localStorage
   useEffect(() => {
-    localStorage.setItem('leadpulse_leads', JSON.stringify(leads));
+    try {
+      localStorage.setItem('leadpulse_leads', JSON.stringify(leads));
+    } catch (e) {
+      console.warn('localStorage save warning:', e);
+    }
   }, [leads]);
 
-  const selectedLead = leads.find(l => l.id === selectedLeadId) || leads[0];
+  const selectedLead = leads.find(l => l.id === selectedLeadId) || leads[0] || INITIAL_LEADS[0];
 
   const handleConfigSaved = () => {
     setApiConfig(getApiConfig());

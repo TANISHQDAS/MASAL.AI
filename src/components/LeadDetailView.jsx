@@ -45,6 +45,13 @@ export default function LeadDetailView({
   const [isSavingNote, setIsSavingNote] = useState(false);
   const [isAuditOpen, setIsAuditOpen] = useState(false);
 
+  useEffect(() => {
+    if (lead) {
+      setLeadStatus(lead.status || 'New');
+      setSalespersonNote(lead.notes || '');
+    }
+  }, [lead?.id]);
+
   if (!lead) {
     return (
       <div className="flex-1 flex items-center justify-center bg-slate-50 p-8 text-center text-slate-500">
