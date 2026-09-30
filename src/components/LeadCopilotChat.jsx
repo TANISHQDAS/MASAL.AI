@@ -10,16 +10,55 @@ import {
   Check, 
   HelpCircle,
   MessageSquareQuote,
-  ShieldAlert
+  ShieldAlert,
+  Mic,
+  MicOff
 } from 'lucide-react';
 import { askLeadCopilot, getApiConfig } from '../services/aiService';
+import { createSpeechRecognizer, isSpeechRecognitionSupported } from '../services/voiceService';
 
 export default function LeadCopilotChat({ lead, onUpdateChatHistory }) {
   const [messages, setMessages] = useState(lead.chatHistory || []);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
+  const [isListeningVoice, setIsListeningVoice] = useState(false);
+  const recognizerRef = useRef(null);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (recognizerRef.current) {
+        try { recognizerRef.current.stop(); } catch (e) {}
+      }
+    };
+  }, []);
+
+  const toggleVoiceInput = () => {
+    if (isListeningVoice) {
+      if (recognizerRef.current) {
+        recognizerRef.current.stop();
+      }
+      setIsListeningVoice(false);
+    } else {
+      if (!isSpeechRecognitionSupported()) {
+        alert('Voice speech recognition is not supported in this browser. Please use Chrome or Edge.');
+        return;
+      }
+      const recognizer = createSpeechRecognizer({
+        onResult: (res) => {
+          setInputValue(res.text);
+        },
+        onError: () => setIsListeningVoice(false),
+        onEnd: () => setIsListeningVoice(false)
+      });
+      if (recognizer) {
+        recognizerRef.current = recognizer;
+        recognizer.start();
+        setIsListeningVoice(true);
+      }
+    }
+  };
 
   // Sync messages if active lead changes
   useEffect(() => {
@@ -225,9 +264,23 @@ export default function LeadCopilotChat({ lead, onUpdateChatHistory }) {
           }} 
           className="flex items-center gap-2"
         >
+          {/* Voice Command Button */}
+          <button
+            type="button"
+            onClick={toggleVoiceInput}
+            className={`p-2 rounded text-xs transition border flex items-center justify-center shrink-0 ${
+              isListeningVoice 
+                ? 'bg-red-600 text-white border-red-700 animate-pulse' 
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+            }`}
+            title={isListeningVoice ? 'Listening... Click to stop' : 'Speak your question (Voice Command)'}
+          >
+            {isListeningVoice ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5 text-[#ec7211]" />}
+          </button>
+
           <input
             type="text"
-            placeholder={`Ask Copilot anything about ${lead.name} ("how to handle their objection?", "draft counter-offer")...`}
+            placeholder={isListeningVoice ? "Listening to your voice..." : `Ask anything about ${lead.name} or click mic to speak...`}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             disabled={isLoading}
