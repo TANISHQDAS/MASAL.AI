@@ -281,6 +281,51 @@ export default function LeadIntakeModal({ isOpen, onClose, onSubmit, isAnalyzing
                 </div>
               )}
             </div>
+
+            <div className="mt-3 flex items-center justify-between text-xs">
+              <span className="text-[11px] text-slate-500">Need a sample document to test?</span>
+              <div className="flex items-center gap-2">
+                <a
+                  href="/sample_lead_inquiry.pdf"
+                  download="sample_lead_inquiry.pdf"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#0972d3] hover:underline bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded border border-blue-200 transition"
+                  title="Download sample PDF to test drag and drop"
+                >
+                  <FileText className="w-3 h-3 text-[#0972d3]" />
+                  <span>Download Sample PDF</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setUploadedFileName('sample_lead_inquiry.pdf');
+                    setIsProcessingDoc(true);
+                    try {
+                      const res = await fetch('/sample_lead_inquiry.txt');
+                      const text = await res.text();
+                      const structured = await extractLeadFromRawTranscript(text, getApiConfig());
+                      setFormData({
+                        name: structured.name || 'Jonathan Sterling',
+                        location: structured.location || 'Downtown Financial District / Waterfront Bay Area',
+                        propertyRequirement: structured.propertyRequirement || '3 to 4 Bed Luxury Penthouse with Private Terrace',
+                        budget: structured.budget || '$3,200,000 (All-Cash)',
+                        buyingTimeline: structured.buyingTimeline || 'Immediate (Within 14-21 Days)',
+                        customerMessage: text.slice(0, 800)
+                      });
+                      setErrors({});
+                    } catch (e) {
+                      console.error(e);
+                    } finally {
+                      setIsProcessingDoc(false);
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded border border-emerald-300 transition"
+                  title="Instantly parse the sample inquiry document"
+                >
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  <span>Auto-Load Sample PDF Data</span>
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
