@@ -25,7 +25,8 @@ import {
   Layers,
   Edit3,
   Save,
-  Printer
+  Printer,
+  ShieldCheck
 } from 'lucide-react';
 import LeadCopilotChat from './LeadCopilotChat';
 import DealAcceleratorTab from './DealAcceleratorTab';
